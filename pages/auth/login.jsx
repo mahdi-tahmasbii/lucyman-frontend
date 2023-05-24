@@ -1,5 +1,4 @@
 import Link from "next/link";
-import LoginComponent from "@/components/Authentication/login";
 import LoginForm from "@/components/Authentication/login";
 
 export default function LoginPage() {
@@ -20,7 +19,7 @@ export default function LoginPage() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <LoginForm />
           <p className="mt-10 text-center text-sm text-gray-500">
-            اکر اکانت ندارید?
+            اکر اکانت ندارید؟
             <Link
               href="/auth/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"

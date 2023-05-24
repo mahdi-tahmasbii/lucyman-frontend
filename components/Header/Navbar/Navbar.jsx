@@ -4,21 +4,27 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Cart from "./Cart";
+import { signIn, signOut, useSession } from "next-auth/react";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const { data: session, status } = useSession();
   const links = [
     { title: "خانه", link: "/HomePage", id: 1 },
     { title: "فروشگاه", link: "/ProductPage", id: 2 },
     { title: "اخبار", link: "/", id: 3 },
-    {
-      title: "پروفایل",
-      link: "/auth/login",
-      id: 4,
-    },
-    { title: "خروج", link: "/", id: 5 },
+    // {
+    //   title: session ? "پروفایل" : "ورود",
+    //   link: session ? "/UserPannel" : "/auth/login",
+    //   id: 4,
+    // },
+    // {
+    //   title: session ? "خروج" : "",
+    //   link: session ? "" : "",
+    //   id: 4,
+    // },
   ];
 
   return (
@@ -58,6 +64,25 @@ export default function Navbar() {
                         </Link>
                       );
                     })}
+                    {session?.user ? (
+                      <>
+                        <Link
+                          href={"/UserPannel"}
+                          className="rounded-md  px-3 py-2 text-sm font-medium text-black hover:bg-gray-800 hover:text-white duration-500 ml-2 mr-2"
+                        >
+                          پروفایل
+                        </Link>
+                        <br />
+                        <button
+                          onClick={() => signOut()}
+                          className="hover:bg-red-500 hover:px-2 hover:text-white hover:rounded-md"
+                        >
+                          خروج
+                        </button>
+                      </>
+                    ) : (
+                      <button onClick={() => signIn()}>ورود/ثبت نام</button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -115,7 +140,32 @@ export default function Navbar() {
                   </Disclosure.Button>
                 );
               })}
-              <div className=" flex md:hidden">
+              {session?.user ? (
+                <>
+                  <Link
+                    href={"/UserPannel"}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-black border-b-2 "
+                  >
+                    پروفایل
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-black border-b-2 "
+                  >
+                    خروج
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => signIn()}
+                  className="block rounded-md px-3 py-2 text-base font-medium text-black "
+                >
+                  ورود/ثبت نام
+                </button>
+              )}
+              <br />
+              <hr />
+              <div className=" flex lg:hidden">
                 <Cart />
               </div>
             </div>

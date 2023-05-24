@@ -1,77 +1,90 @@
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import axios from "axios";
 
-const LoginForm = () => {
-  const [email, setEmail] = useState("");
+export default function LoginForm() {
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      email,
-      password,
-    };
-
     try {
-      const res = await fetch("http://localhost:3001/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post(
+        "http://localhost:3001/users/login",
+        {
+          phoneNumber,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      if (res.ok) {
-        // Login successful
-        // Redirect or show success message
+      if (response.status === 200) {
+        // Authentication succeeded, sign in using NextAuth
+        await signIn("credentials", {
+          phoneNumber,
+          password,
+          redirect: false,
+        });
+
+        // Clear the form fields
+        setPhoneNumber("");
+        setPassword("");
+        setError("");
       } else {
-        const data = await res.json();
-        // Login failed
-        // Show error message from the response
+        setError("Invalid credentials. Please try again.");
       }
     } catch (error) {
-      // Login failed
-      // Show error message
+      // Handle error
+      console.error(error);
+      setError("An error occurred. Please try again later.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label htmlFor="email" className="block mb-2 font-medium text-gray-700">
-          ایمیل
+        <label
+          htmlFor="phoneNumber"
+          className="block mb-2 font-medium text-gray-700"
+        >
+          شماره تلفن
         </label>
         <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          id="phoneNumber"
           className="w-full p-2 border border-gray-300 rounded"
-          required
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-6">
         <label
           htmlFor="password"
           className="block mb-2 font-medium text-gray-700"
         >
-          رمزورود
+          رمز ورود
         </label>
         <input
           type="password"
+          className="w-full p-2 border border-gray-300 rounded"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
-          required
         />
       </div>
-      <button
-        type="submit"
-        className="px-4 py-2 font-medium text-white bg-blue-500 rounded"
-      >
-        وارد شوید.
-      </button>
+      {error && <div className="text-red-500">{error}</div>}
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white w-screen py-2 font-medium text-whitebg-blue-500 rounded text-center"
+        >
+          ورود
+        </button>
+      </div>
     </form>
   );
-};
-
-export default LoginForm;
+}

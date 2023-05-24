@@ -35,7 +35,7 @@ const ProductCard = ({ products }) => {
                 </div>
                 <div className="mt-6">
                   <a
-                    href={"/pages/ProductPage/dsa4"}
+                    href={"/ProductPage/dsa4"}
                     className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 py-2 px-8 text-sm font-medium text-gray-900 hover:bg-gray-200"
                   >
                     اضافه کردن به سبد خرید

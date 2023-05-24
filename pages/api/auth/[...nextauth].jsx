@@ -1,45 +1,35 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const options = {
+  pages: {
+    signIn: "/auth/login",
+  },
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        phone: { label: "Phone Number", type: "text" },
-        gender: {
-          label: "Gender",
-          type: "radio",
-          options: [
-            { value: "male", label: "Male" },
-            { value: "female", label: "Female" },
-          ],
+        phoneNumber: {
+          label: "phoneNumber",
+          type: "text",
+          placeholder: "jsmith@yahoo.com",
         },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials) => {
-        try {
-          const res = await fetch("http://localhost:3001/users/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(credentials),
-          });
-
-          const data = await res.json();
-
-          if (res.ok) {
-            return data.user;
-          } else {
-            throw new Error(data.message || "Registration failed");
-          }
-        } catch (error) {
-          throw new Error(error.message || "Registration failed");
+      async authorize(credentials, req) {
+        const res = await fetch("http://localhost:3001/users/login", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+          headers: { "Content-Type": "application/json" },
+        });
+        const user = await res.json();
+        if (res.ok && user) {
+          return user;
         }
+        return null;
       },
     }),
   ],
-  // Add any additional NextAuth configuration options here
 };
 
 export default (req, res) => NextAuth(req, res, options);

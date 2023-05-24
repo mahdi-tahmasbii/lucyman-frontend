@@ -44,12 +44,12 @@ export default function Slider() {
                   <span className="text-white  md:text-xl  text-sm">
                     عالی به نظر برسید
                   </span>
-                  <span className=" top-16 text-white font-bold md:text-5xl text-lg">
+                  <span className=" top-16 text-white font-bold md:text-5xl text-lg mb-5 mt-2">
                     محصولات جدید
                   </span>
                   <Link
                     href={""}
-                    className=" top-48 text-white border-2 border-white p-2 hover:bg-white hover:text-black duration-500 "
+                    className=" top-48 text-black bg-white  border-2 border-white p-2 hover:bg-black hover:text-white duration-500 "
                   >
                     <span> محصولات جدید</span>
                   </Link>

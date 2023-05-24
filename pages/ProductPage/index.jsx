@@ -10,9 +10,6 @@ const ProductsPage = () => {
     <>
       <HeaderLayout />
       <ProductListSideBar />
-      <div className="md:hidden -mt-32">
-        <TopProduct />
-      </div>
       <ProductsPagination />
       <FooterLayout />
     </>
