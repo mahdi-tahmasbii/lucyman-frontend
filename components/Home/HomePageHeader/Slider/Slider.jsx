@@ -44,7 +44,7 @@ export default function Slider() {
                   <span className="text-white  md:text-xl  text-sm">
                     عالی به نظر برسید
                   </span>
-                  <span className=" top-16 text-white font-bold md:text-5xl text-lg mb-5 mt-2">
+                  <span className=" top-16 text-white font-bold md:text-5xl text-lg sm:mb-5 mt-2">
                     محصولات جدید
                   </span>
                   <Link

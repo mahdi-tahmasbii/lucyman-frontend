@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,6 +18,7 @@ export default function LoginForm() {
         {
           phoneNumber,
           password,
+          rememberMe: true,
         },
         {
           withCredentials: true,
@@ -31,9 +34,12 @@ export default function LoginForm() {
         });
 
         // Clear the form fields
-        setPhoneNumber("");
-        setPassword("");
-        setError("");
+        // setPhoneNumber("");
+        // setPassword("");
+        // setError("");
+
+        // Redirect to home page
+        router.push("/HomePage");
       } else {
         setError("Invalid credentials. Please try again.");
       }

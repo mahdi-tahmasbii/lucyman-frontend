@@ -2,9 +2,14 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const options = {
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   pages: {
     signIn: "/auth/login",
   },
+
   providers: [
     CredentialsProvider({
       name: "Credentials",
